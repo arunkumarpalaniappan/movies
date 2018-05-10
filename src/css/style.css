@@ -1,0 +1,43 @@
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Roboto';
+  font-size: 14px;
+}
+.movies-index {
+  background: #eeeeee;
+  padding: 50px 20px;
+  position: relative; /* needed for footer positioning*/
+  height: auto !important; /* real browsers */
+  min-height: 100%; /* real browsers */
+}
+.movies-container {
+  padding: 20px 50px;
+}
+.movie-poster {
+  height: 175px;
+  width: 130px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.discover-header {
+  padding-left: 100px;
+  font-weight: 500 !important;
+}
+.movie-title {
+  font-weight: 500;
+  font-size: 12px;
+  width: 100%;
+  text-align: center;
+  word-wrap: break-word;
+}
+.movie-lan {
+  font-size: 11px;
+  color: #e45a35;
+  width: 100%;
+  text-align: center;
+}
+.ele-5 {
+  max-width: 20%;
+}
