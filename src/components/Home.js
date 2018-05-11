@@ -125,7 +125,10 @@ class Home extends React.Component {
         //     value,
         //     onChange: this.onChange
         // };
-        const moviesData = this.state.moviesData.filter((movie) => movie.original_title.toLowerCase().trim().includes(this.state.search.toLowerCase().trim()));
+        let moviesData = [];
+        if(this.state.moviesData.length) {
+            moviesData = this.state.moviesData.filter((movie) => movie.original_title.toString().toLowerCase().trim().includes(this.state.search.toLowerCase().trim()));
+        }
         return (
             <div className={"movie-container"}>
                 <div className={"movie-info"}>
