@@ -6,12 +6,7 @@ import * as moviesActions from '../actions/moviesAction';
 import {
     bindActionCreators
 } from 'redux'
-import {
-    withStyles as classes
-} from 'material-ui/styles';
-import Grid from 'material-ui/Grid';
 import Typography from 'material-ui/Typography';
-import _ from 'lodash';
 import { CircularProgress } from 'material-ui/Progress';
 import Fade from 'material-ui/transitions/Fade';
 import {Link} from 'react-router-dom';
@@ -30,10 +25,13 @@ class Movie extends React.Component {
         this.setState({movieData: nextState.movieInfo[0]})
     }
     render() {
+        let background = '#000';
+        if(this.state.movieData.belongs_to_collection && !this.state.movieData.belongs_to_collection.includes("'backdrop_path': None")) 
+            background = `url(http://image.tmdb.org/t/p/original${JSON.parse(this.state.movieData.belongs_to_collection.replace(/'/g, '"')).backdrop_path}) no-repeat center center fixed`;
         return(
-            <div className={"movie-container"}>
+            <div className={"movie-container-info"}>
                 {(this.state.movieData.belongs_to_collection)?(
-                    <div className={"movie-info"} style={{background: `url(http://image.tmdb.org/t/p/original${JSON.parse(this.state.movieData.belongs_to_collection.replace(/'/g, '"')).backdrop_path}) no-repeat center center fixed`}}>
+                    <div className={"movie-info"} style={{background: background}}>
                         <div className={"movie-info-modal"}>
                             <div className={"movie-modal-container"}>
                             <Typography variant="headline" component="h1" className={"font-white font-34em"}>
@@ -59,7 +57,7 @@ class Movie extends React.Component {
                                 </div>
                                 <div style={{fontSize: 16}}>
                                     <span>
-                                    {JSON.parse(this.state.movieData.genres.replace(/'/g, '"')).map(g => g.name.replace(/\ /g,'-')+' ')}
+                                    {JSON.parse(this.state.movieData.genres.replace(/'/g, '"')).map(g => g.name.replace(/ /g,'-')+' ')}
                                     </span>
                                 </div>
                                 <div className={"movies-desc"}>
@@ -76,16 +74,19 @@ class Movie extends React.Component {
                         </div>
                     </div>
                 ):
-                <div className={"movie-info"}>
-                    <Fade
-                        in={true}
-                        style={{
-                        transitionDelay: true ? '800ms' : '0ms',
-                        }}
-                        unmountOnExit
-                        >
-                        <CircularProgress />
-                    </Fade>
+                <div className={"movie-info-loader"}>
+                            <Fade
+                                in={true}
+                                style={{
+                                transitionDelay: true ? '800ms' : '0ms',
+                                }}
+                                unmountOnExit
+                                >
+                                <CircularProgress />
+                            </Fade>
+                            <div className={"movie-info-text"}>
+                                Fetching movie details, Please wait...
+                            </div>
                 </div>}
                 </div>
         )
