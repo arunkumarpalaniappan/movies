@@ -15,7 +15,9 @@ import _ from 'lodash';
 import { CircularProgress } from 'material-ui/Progress';
 import Fade from 'material-ui/transitions/Fade';
 import { Link } from 'react-router-dom';
-import Autosuggest from 'react-autosuggest';
+import Input, { InputLabel, InputAdornment } from 'material-ui/Input';
+import { FormControl } from 'material-ui/Form';
+import Search from '@material-ui/icons/Search'
 
 class Home extends React.Component {
 
@@ -26,13 +28,15 @@ class Home extends React.Component {
             fetching: false,
             value: '',
             suggestions: [],
-            requestSent: false
+            requestSent: false,
+            search: ''
         };
         this.handleOnScroll = this.handleOnScroll.bind(this);
         this.getSuggestions = this.getSuggestions.bind(this);
         this.getSuggestionValue = this.getSuggestionValue.bind(this);
         this.renderSuggestion = this.renderSuggestion.bind(this);
         this.debouncedDataGet = this.debouncedDataGet.bind(this);
+        this.searchMovies = this.searchMovies.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -45,6 +49,9 @@ class Home extends React.Component {
 
     componentDidMount() {
         window.addEventListener('scroll', this.handleOnScroll);
+        // [1,2,3,4,5].map(page => {
+        //     this.props.actions.list(page);
+        // })
         this.props.actions.list(1);
     }
     // Teach Autosuggest how to calculate suggestions for any given input value.
@@ -91,7 +98,7 @@ class Home extends React.Component {
     };
     debouncedDataGet() {
         if(!this.state.requestSent) {
-            this.props.actions.list((this.state.moviesData.length/20)+1);
+            this.props.actions.list((this.state.moviesData.length/40)+1);
             this.setState({requestSent: true});
         }
     }
@@ -106,35 +113,45 @@ class Home extends React.Component {
         }
     }
 
+    searchMovies(e) {
+        this.setState({search: e.target.value});
+    }
     render() {
-        const { value, suggestions } = this.state;
+        // const { value, suggestions } = this.state;
 
         // Autosuggest will pass through all these props to the input.
-        const inputProps = {
-            placeholder: 'Search',
-            value,
-            onChange: this.onChange
-        };
+        // const inputProps = {
+        //     placeholder: 'Search',
+        //     value,
+        //     onChange: this.onChange
+        // };
+        const moviesData = this.state.moviesData.filter((movie) => movie.original_title.toLowerCase().trim().includes(this.state.search.toLowerCase().trim()));
         return (
             <div className={"movie-container"}>
                 <div className={"movie-info"}>
                     <div className={"movies-index"}>                        
                         <Grid container item xs={12} >
-                            <Grid item xs={8}>
+                            <Grid item xs={2}>
                                 <Typography variant="headline" component="h2" className={"discover-header"}>
                                     Discover
                                 </Typography>
                             </Grid>
-                            <Grid item xs={4}>
-                                <Autosuggest
-                                    className={"autoselect-input"}
-                                    suggestions={suggestions}
-                                    onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-                                    onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                                    getSuggestionValue={this.getSuggestionValue}
-                                    renderSuggestion={this.renderSuggestion}
-                                    inputProps={inputProps}
-                                />
+                            <Grid item xs={8} className={"search-container"}>
+                                <FormControl fullWidth className={classes.margin}>
+                                    <InputLabel htmlFor="search-bar">Search</InputLabel>
+                                    <Input
+                                    id="search-bar"
+                                    className={"search-bar"}
+                                    onChange={this.searchMovies}
+                                    endAdornment={
+                                        <InputAdornment position="end">
+                                        <Search />
+                                        </InputAdornment>
+                                    }
+                                    />
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={2}>
                             </Grid>
                         </Grid>                        
                         <div className={"movies-container"}>
@@ -143,8 +160,9 @@ class Home extends React.Component {
                                     <Grid item xs={2}>
                                     </Grid>
                                     <Grid item xs={8}>
+                                        <div className={"search-stat"}>{!!this.state.search.length ? (`${moviesData.length} results found`) : null} </div>
                                         <Grid container className={classes.demo} justify="center" spacing={Number(16)}>
-                                            {this.state.moviesData.map(movie => (
+                                            {moviesData.map(movie => (
                                                 <Grid container key={movie._id} item className={"ele-5"} alignItems={'center'} justify={'center'}>
                                                     <div>
                                                         <Link to={`/movies/${movie._id}`} ><img id={movie._id} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.original_title} className={"movie-poster"} /> </Link>
@@ -154,9 +172,9 @@ class Home extends React.Component {
                                                 </Grid>
                                             ))}
                                             <Fade
-                                                in={true}
+                                                in={!this.state.search.length}
                                                 style={{
-                                                    transitionDelay: true ? '800ms' : '0ms',
+                                                    transitionDelay: !this.state.search.length ? '800ms' : '0ms',
                                                 }}
                                                 unmountOnExit
                                             >

@@ -170,3 +170,13 @@ html,body {
     width: 200px;
     margin-left: -70px;
   }
+  .search-container {
+    padding: 0px 100px;
+  }
+  .search-container:before,.search-container:hover {
+    background: transparent !important;
+  }
+  .search-stat {
+    padding-left: 65px;
+    padding-bottom: 15px;
+  }
