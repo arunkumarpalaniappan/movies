@@ -1,9 +1,10 @@
-body {
+html,body {
   margin: 0;
   padding: 0;
   height: 100%;
   font-family: 'Roboto';
   font-size: 14px;
+  width: 100%;
 }
 .movies-index {
   background: #eeeeee;
@@ -40,4 +41,20 @@ body {
 }
 .ele-5 {
   max-width: 20%;
+}
+.movie-container {
+  height: auto;
+  width: 100%;
+  color: #eeeeee;
+}
+.movie-info {
+  background: #eeeeee;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }

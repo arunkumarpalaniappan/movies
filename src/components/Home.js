@@ -53,41 +53,45 @@ class Home extends React.Component {
 
     render() {
         return (
-            <div className={"movies-index"}>
-                <Typography variant="headline" component="h2" className={"discover-header"}>
-                    Discover
-                </Typography>
-                <div className={"movies-container"}>
-                    <Grid container className={classes.root} spacing={16}>
-                        <Grid container item xs={12} >
-                        <Grid item xs={2}>
-                        </Grid>
-                        <Grid item xs={8}>
-                            <Grid container className={classes.demo} justify="center" spacing={Number(16)}>
-                                {this.state.moviesData.map(movie => (
-                                <Grid container key={movie._id} item className={"ele-5"} alignItems={'center'} justify={'center'}>
-                                    <div>
-                                    <Link to={`/movies/${movie._id}`} ><img id={movie._id} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.original_title} className={"movie-poster"} /> </Link>
-                                    </div>
-                                        <div className={"movie-title"}>{movie.original_title}</div>
-                                        <div className={"movie-lan"}>{movie.release_date.split("-")[0]}</div>
+            <div className={"movie-container"}>
+                <div className={"movie-info"}>
+                    <div className={"movies-index"}>
+                        <Typography variant="headline" component="h2" className={"discover-header"}>
+                            Discover
+                        </Typography>
+                        <div className={"movies-container"}>
+                            <Grid container className={classes.root} spacing={16}>
+                                <Grid container item xs={12} >
+                                <Grid item xs={2}>
                                 </Grid>
-                                ))}
-                                <Fade
-                                    in={true}
-                                    style={{
-                                    transitionDelay: true ? '800ms' : '0ms',
-                                    }}
-                                    unmountOnExit
-                                >
-                                    <CircularProgress />
-                                </Fade>
+                                <Grid item xs={8}>
+                                    <Grid container className={classes.demo} justify="center" spacing={Number(16)}>
+                                        {this.state.moviesData.map(movie => (
+                                        <Grid container key={movie._id} item className={"ele-5"} alignItems={'center'} justify={'center'}>
+                                            <div>
+                                            <Link to={`/movies/${movie._id}`} ><img id={movie._id} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.original_title} className={"movie-poster"} /> </Link>
+                                            </div>
+                                                <div className={"movie-title"}>{movie.original_title}</div>
+                                                <div className={"movie-lan"}>{movie.release_date.split("-")[0]}</div>
+                                        </Grid>
+                                        ))}
+                                        <Fade
+                                            in={true}
+                                            style={{
+                                            transitionDelay: true ? '800ms' : '0ms',
+                                            }}
+                                            unmountOnExit
+                                        >
+                                            <CircularProgress />
+                                        </Fade>
+                                    </Grid>
+                                </Grid>
+                                <Grid item xs={2}>
+                                </Grid>
+                                </Grid>
                             </Grid>
-                        </Grid>
-                        <Grid item xs={2}>
-                        </Grid>
-                        </Grid>
-                    </Grid>
+                        </div>
+                    </div>
                 </div>
             </div>
         );
