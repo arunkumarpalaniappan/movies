@@ -5,6 +5,7 @@ html,body {
   font-family: 'Roboto';
   font-size: 14px;
   width: 100%;
+  font-family: 'Acme', sans-serif;
 }
 .movies-index {
   background: #eeeeee;
@@ -25,6 +26,7 @@ html,body {
 .discover-header {
   padding-left: 100px;
   font-weight: 500 !important;
+  font-family: 'Acme', sans-serif !important;
 }
 .movie-title {
   font-weight: 500;
@@ -32,10 +34,11 @@ html,body {
   width: 100%;
   text-align: center;
   word-wrap: break-word;
+  color: #000000;
 }
 .movie-lan {
   font-size: 11px;
-  color: #e45a35;
+  color: #fe1b1b;
   width: 100%;
   text-align: center;
 }
@@ -57,4 +60,44 @@ html,body {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+}
+.movie-info-modal {
+    background: #000;
+    opacity: 0.7;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+}
+.movie-modal-container {
+    padding: 150px;
+    color: #fff;
+}
+.font-white {
+    color: #fff !important;
+    font-family: 'Acme', sans-serif !important; 
+}
+.font-34em {
+    font-size: 3.4em !important;
+}
+.movies-desc {
+    padding: 50px;
+}
+.movies-links {
+    padding: 40px 80px;
+}
+.movies-href-back,.movies-href-back:hover,.movies-href-back:active {
+    color: #fff;
+    text-decoration: none;
+    padding: 9px 34px;
+    border: 2px #fff solid;
+    border-radius: 11px;
+}
+.movies-href-imdb,.movies-href-imdb:hover,.movies-href-imdb:active {
+    color: #fe1b1b;
+    text-decoration: none;
+    padding: 9px 34px;
+    border: 2px #fe1b1b solid;
+    border-radius: 11px;
+    margin-left: 25px;
 }
