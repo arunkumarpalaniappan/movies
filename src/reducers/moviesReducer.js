@@ -7,6 +7,10 @@ export default function getMoviesReducer(state = initialState.moviesIndex, actio
             return {fetching: true};
         case types.GET_MOVIE_INDEX_SUCCESS:
             return action.moviesIndex;
+        case types.SEARCH_SUCCESS:
+            return action.moviesSearch;
+        case types.SEARCH_PENDING:
+            return {fetching: true};
         default:
             return state;
     }

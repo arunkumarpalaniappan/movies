@@ -26,6 +26,17 @@ class moviesApi {
         .then((json) => json)
         .catch((err) => err);
     }
+    static search(query) {
+        return fetch(`${host}/search?q=${query}`, {
+            headers: {
+                'Accept': 'application/json'
+            },
+            method: 'GET'
+        })
+        .then((response) => response.json())
+        .then((json) => json)
+        .catch((err) => err);
+    }
 }
 
 export default moviesApi;

@@ -58,6 +58,17 @@ html,body {
 .movie-info {
   background: #f3f3f3;
     position: absolute;
+    top: 64px;
+    bottom: 0;
+    width: 100%;
+    -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+.movie-info-ind {
+  background: #f3f3f3;
+    position: absolute;
     top: 0;
     bottom: 0;
     width: 100%;
@@ -108,18 +119,37 @@ html,body {
 }
 
 .react-autosuggest__input {
-    width: 140px;
-    height: 10px;
-    padding: 10px;
-    font-family: 'Acme', sans-serif;
-    font-weight: 300;
-    border: 2px solid #de1212;
-    border-radius: 17px;
-    background: #f3f3f3;
+    width: 250px;
+    font-family: 'Roboto';
+    height: 2.6rem;
+    padding-left: 3.4rem;
+    -webkit-transition: background-color .25s cubic-bezier(.1,.7,.1,1),color .25s cubic-bezier(.1,.7,.1,1);
+    transition: background-color .25s cubic-bezier(.1,.7,.1,1),color .25s cubic-bezier(.1,.7,.1,1);
+    background-color: rgba(0,0,0,.26);
+    color: inherit;
+    font-size: 10px;
+    /* position: relative; */
+    /* padding: 0 4.4rem 0 7.2rem; */
+    /* text-overflow: ellipsis; */
+    z-index: 2;
+    border-radius: .2rem;
+    border: none;
+    -webkit-transition: width .25s cubic-bezier(.1,.7,.1,1);
+    transition: width .25s cubic-bezier(.1,.7,.1,1);
+  }
+
+  .react-autosuggest__input:focus {
+    width: 400px;
   }
   
   .react-autosuggest__input--focused {
+    color: #000;
     outline: none;
+    width: 400px;
+    background-color: #fff;
+    -webkit-box-shadow: 0 0.1rem 0 rgba(0,0,0,.07) inset;
+    box-shadow: inset 0 0.1rem 0 rgba(0,0,0,.07);
+    overflow-y: auto;
   }
   
   .react-autosuggest__suggestions-container {
@@ -129,8 +159,8 @@ html,body {
   .react-autosuggest__suggestions-container--open {
     display: block;
     position: absolute;
-    top: 101px;
-    width: 280px;
+    width: 448px;
+    color: #000;
     border: 1px grey solid;
     background-color: #f3f3f3;
     font-weight: 300;
@@ -138,6 +168,8 @@ html,body {
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
     z-index: 2;
+    height: 300px;
+    overflow: auto;
   }
   
   .react-autosuggest__suggestions-list {
@@ -180,3 +212,19 @@ html,body {
     padding-left: 65px;
     padding-bottom: 15px;
   }
+  .md-search-result__article {
+    padding-left: 4.4rem;
+}
+.md-search-result__article {
+    position: relative;
+    padding: 0 1.6rem;
+    overflow: auto;
+}
+
+.md-content__icon, .md-footer-nav__button, .md-header-nav__button, .md-nav__button, .md-nav__title:before, .md-search-result__article--document:before {
+  display: inline-block;
+  margin: .4rem;
+  padding: .8rem;
+  font-size: 2.4rem;
+  cursor: pointer;
+}

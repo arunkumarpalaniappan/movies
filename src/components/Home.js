@@ -17,8 +17,13 @@ import Fade from 'material-ui/transitions/Fade';
 import { Link } from 'react-router-dom';
 import Input, { InputLabel, InputAdornment } from 'material-ui/Input';
 import { FormControl } from 'material-ui/Form';
-import Search from '@material-ui/icons/Search'
-
+import Search from '@material-ui/icons/Search';
+import AppBar from 'material-ui/AppBar';
+import Toolbar from 'material-ui/Toolbar';
+import Button from 'material-ui/Button';
+import IconButton from 'material-ui/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import Autosuggest from 'react-autosuggest';
 class Home extends React.Component {
 
     constructor(props) {
@@ -29,7 +34,9 @@ class Home extends React.Component {
             value: '',
             suggestions: [],
             requestSent: false,
-            search: ''
+            search: '',
+            searchData : [],
+            isSearched: false
         };
         this.handleOnScroll = this.handleOnScroll.bind(this);
         this.getSuggestions = this.getSuggestions.bind(this);
@@ -37,14 +44,18 @@ class Home extends React.Component {
         this.renderSuggestion = this.renderSuggestion.bind(this);
         this.debouncedDataGet = this.debouncedDataGet.bind(this);
         this.searchMovies = this.searchMovies.bind(this);
+        this.searchwithDebounce = this.searchwithDebounce.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
         const merge = (a, b, p) => a.filter(aa => !b.find(bb => aa[p] === bb[p])).concat(b);
-        if (!!!nextProps.moviesData.fetching)
+        if(this.state.isSearched) {
+            this.setState({searchData: nextProps.moviesData ,suggestions : this.getSuggestions()});
+        } else if (!!!nextProps.moviesData.fetching) {
             this.setState({ moviesData: merge(this.state.moviesData, nextProps.moviesData, "_id"), fetching: false, requestSent: false })
-        else
+        } else {
             this.setState({ fetching: nextProps.moviesData.fetching })
+        }
     }
 
     componentDidMount() {
@@ -55,13 +66,8 @@ class Home extends React.Component {
         this.props.actions.list(1);
     }
     // Teach Autosuggest how to calculate suggestions for any given input value.
-    getSuggestions = (value) => {
-        const inputValue = value.trim().toLowerCase();
-        const inputLength = inputValue.length;
-
-        return inputLength === 0 ? [] : this.state.moviesData.filter(lang =>
-            lang.original_title.toLowerCase().slice(0, inputLength) === inputValue
-        );
+    getSuggestions = () => {
+        return this.state.searchData
     };
     // When suggestion is clicked, Autosuggest needs to populate the input
     // based on the clicked suggestion. Teach Autosuggest how to calculate the
@@ -73,8 +79,13 @@ class Home extends React.Component {
 
     // Use your imagination to render suggestions.
     renderSuggestion = suggestion => (
-        <div id={suggestion._id}>
-            {suggestion.original_title}
+        <div id={suggestion._id} className={"md-search-result__article md-search-result__article--document"}>
+            <h4>
+                {suggestion.original_title}
+            </h4>
+            <div>
+                {(suggestion.overview.length)?suggestion.overview.substring(0,100):''}...
+            </div>
         </div>
     );
     onChange = (event, { newValue }) => {
@@ -85,9 +96,13 @@ class Home extends React.Component {
     // Autosuggest will call this function every time you need to update suggestions.
     // You already implemented this logic above, so just use it.
     onSuggestionsFetchRequested = ({ value }) => {
-        this.setState({
-            suggestions: this.getSuggestions(value)
-        });
+        if(value.length > 3) {
+            this.setState({value: value, isSearched: true})
+            //const searchFun = _.debounce(this.searchwithDebounce, 1000);
+            this.props.actions.search(value)
+        } else {
+            this.setState({isSearched : false})
+        }
     };
 
     // Autosuggest will call this function every time you need to clear suggestions.
@@ -112,51 +127,61 @@ class Home extends React.Component {
             fetchNextSet()
         }
     }
-
+    searchwithDebounce(query) {
+        this.props.actions.search(query);
+    }
     searchMovies(e) {
-        this.setState({search: e.target.value});
+        if(e.target.value.length > 3) {
+            this.setState({value: e.target.value, isSearched: true})
+            const searchFun = _.debounce(this.searchwithDebounce, 1000);
+            this.props.actions.search(e.target.value)
+        } else {
+            this.setState({isSearched : false})
+        }
     }
     render() {
-        // const { value, suggestions } = this.state;
+        const { value, suggestions } = this.state;
 
         // Autosuggest will pass through all these props to the input.
-        // const inputProps = {
-        //     placeholder: 'Search',
-        //     value,
-        //     onChange: this.onChange
-        // };
+        const inputProps = {
+            placeholder: 'Search Movie Names/IMDB IDs/Descriptions/Genres',
+            value,
+            onChange: this.onChange
+        };
         let moviesData = [];
         if(this.state.moviesData.length) {
-            moviesData = this.state.moviesData.filter((movie) => movie.original_title.toString().toLowerCase().trim().includes(this.state.search.toLowerCase().trim()));
+            moviesData = this.state.moviesData;
+            //moviesData = this.state.moviesData.filter((movie) => movie.original_title.toString().toLowerCase().trim().includes(this.state.search.toLowerCase().trim()));
         }
+        // if(this.state.isSearched) {
+        //     moviesData = this.state.searchData
+        // }
         return (
             <div className={"movie-container"}>
+            <AppBar position="static">
+                <Toolbar>
+                    <Typography variant="title" color="inherit" className={classes.flex} style={{fontFamily:'Acme, sans-serif'}}>
+                        Discover
+                    </Typography>
+                    <Grid container item xs={12} >
+                            <Grid item xs={4}>
+                            </Grid>
+                            <Grid item xs={8}>
+                                <Autosuggest
+                                    className={"autoselect-input"}
+                                    suggestions={suggestions}
+                                    onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                                    onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                                    getSuggestionValue={this.getSuggestionValue}
+                                    renderSuggestion={this.renderSuggestion}
+                                    inputProps={inputProps}
+                                />
+                            </Grid>
+                        </Grid>  
+                </Toolbar>
+            </AppBar>
                 <div className={"movie-info"}>
-                    <div className={"movies-index"}>                        
-                        <Grid container item xs={12} >
-                            <Grid item xs={2}>
-                                <Typography variant="headline" component="h2" className={"discover-header"}>
-                                    Discover
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={8} className={"search-container"}>
-                                <FormControl fullWidth className={classes.margin}>
-                                    <InputLabel htmlFor="search-bar">Search</InputLabel>
-                                    <Input
-                                    id="search-bar"
-                                    className={"search-bar"}
-                                    onChange={this.searchMovies}
-                                    endAdornment={
-                                        <InputAdornment position="end">
-                                        <Search />
-                                        </InputAdornment>
-                                    }
-                                    />
-                                </FormControl>
-                            </Grid>
-                            <Grid item xs={2}>
-                            </Grid>
-                        </Grid>                        
+                    <div className={"movies-index"}>                                               
                         <div className={"movies-container"}>
                             <Grid container className={classes.root} spacing={16}>
                                 <Grid container item xs={12} >

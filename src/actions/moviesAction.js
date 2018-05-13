@@ -22,6 +22,17 @@ export function get(id) {
     }
 }
 
+export function search(query) {
+    return function(dispatch) {
+        //dispatch(getSearchPending());
+        return moviesApi.search(query).then(movies => {
+            dispatch(getSearchSuccess(movies));
+        }).catch(error => {
+            throw(error);
+        });
+    }
+}
+
 export function getMoviesPending() {
     return {type: types.GET_MOVIE_INDEX_PENDING};
 }
@@ -30,4 +41,10 @@ export function getMoviesSuccess(moviesIndex) {
 }
 export function getMovieByIdSuccess(movieById) {
     return {type: types.GET_MOVIE_BY_ID_SUCCESS, movieById};
+}
+export function getSearchSuccess(moviesSearch) {
+    return {type: types.SEARCH_SUCCESS, moviesSearch};
+}
+export function getSearchPending() {
+    return {type: types.SEARCH_PENDING};
 }

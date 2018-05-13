@@ -31,7 +31,7 @@ class Movie extends React.Component {
         return(
             <div className={"movie-container-info"}>
                 {(this.state.movieData.belongs_to_collection)?(
-                    <div className={"movie-info"} style={{background: background}}>
+                    <div className={"movie-info-ind"} style={{background: background}}>
                         <div className={"movie-info-modal"}>
                             <div className={"movie-modal-container"}>
                             <Typography variant="headline" component="h1" className={"font-white font-34em"}>
