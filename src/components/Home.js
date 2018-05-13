@@ -84,7 +84,7 @@ class Home extends React.Component {
                 {suggestion.original_title}
             </h4>
             <div>
-                {(suggestion.overview.length)?suggestion.overview.substring(0,100):''}...
+                {(suggestion && suggestion.overview.length)?suggestion.overview.substring(0,100):''}...
             </div>
         </div>
     );
