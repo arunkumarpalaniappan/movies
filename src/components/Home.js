@@ -152,6 +152,8 @@ class Home extends React.Component {
         if(this.state.moviesData.length) {
             moviesData = this.state.moviesData;
             //moviesData = this.state.moviesData.filter((movie) => movie.original_title.toString().toLowerCase().trim().includes(this.state.search.toLowerCase().trim()));
+        } else {
+            return <div id="preloader"><div></div></div>;
         }
         // if(this.state.isSearched) {
         //     moviesData = this.state.searchData

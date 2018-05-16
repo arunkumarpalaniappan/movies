@@ -74,20 +74,7 @@ class Movie extends React.Component {
                         </div>
                     </div>
                 ):
-                <div className={"movie-info-loader"}>
-                            <Fade
-                                in={true}
-                                style={{
-                                transitionDelay: true ? '800ms' : '0ms',
-                                }}
-                                unmountOnExit
-                                >
-                                <CircularProgress />
-                            </Fade>
-                            <div className={"movie-info-text"}>
-                                Fetching movie details, Please wait...
-                            </div>
-                </div>}
+                <div id="preloader"><div></div></div>}
                 </div>
         )
     }
