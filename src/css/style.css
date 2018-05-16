@@ -136,15 +136,16 @@ body::before, .body-bg::before {
 }
 
 .react-autosuggest__input {
-    width: 250px;
-    font-family: 'Roboto';
+    width: 350px;
+    /* font-family: 'Roboto'; */
     height: 2.6rem;
-    padding-left: 3.4rem;
+    /* padding-left: 3.4rem; */
     -webkit-transition: background-color .25s cubic-bezier(.1,.7,.1,1),color .25s cubic-bezier(.1,.7,.1,1);
     transition: background-color .25s cubic-bezier(.1,.7,.1,1),color .25s cubic-bezier(.1,.7,.1,1);
-    background-color: rgba(0,0,0,.26);
-    color: inherit;
-    font-size: 10px;
+    background-color: transparent;
+    color: #fff;
+    font-size: 11px;
+    line-height: 20px;
     /* position: relative; */
     /* padding: 0 4.4rem 0 7.2rem; */
     /* text-overflow: ellipsis; */
@@ -153,19 +154,23 @@ body::before, .body-bg::before {
     border: none;
     -webkit-transition: width .25s cubic-bezier(.1,.7,.1,1);
     transition: width .25s cubic-bezier(.1,.7,.1,1);
+    vertical-align: bottom;
+    margin-top: -6px;
   }
 
   .react-autosuggest__input:focus {
     width: 400px;
+    display: inline-block;
   }
   
   .react-autosuggest__input--focused {
-    color: #000;
+      display: inline-block;
+    color: #fff;
     outline: none;
     width: 400px;
-    background-color: #fff;
-    -webkit-box-shadow: 0 0.1rem 0 rgba(0,0,0,.07) inset;
-    box-shadow: inset 0 0.1rem 0 rgba(0,0,0,.07);
+    /* background-color: #fff; */
+    /* -webkit-box-shadow: 0 0.1rem 0 rgba(0,0,0,.07) inset;
+    box-shadow: inset 0 0.1rem 0 rgba(0,0,0,.07); */
     overflow-y: auto;
   }
   
@@ -177,16 +182,16 @@ body::before, .body-bg::before {
     display: block;
     position: absolute;
     width: 448px;
-    color: #000;
-    border: 1px grey solid;
-    background-color: #f3f3f3;
+    color: #fff;
     font-weight: 300;
     font-size: 16px;
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
     z-index: 2;
     height: 300px;
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    background-color: rgba(0,0,0,.6);
   }
   
   .react-autosuggest__suggestions-list {
@@ -201,7 +206,7 @@ body::before, .body-bg::before {
   }
   
   .react-autosuggest__suggestion--highlighted {
-    background-color: #ddd;
+    background-color: rgba(0,0,0,.7);
   }
   .movie-info-loader {
     position: fixed;
@@ -409,18 +414,13 @@ body::before, .body-bg::before {
   0% {
       opacity: 0;
       -webkit-transform: scale(.5);
-      transform: scale(.5)
+      transform: scale(.5);
   }
 
-  60% {
-      opacity: 1;
-      -webkit-transform: scale(1.2);
-      transform: scale(1.2)
-  }
 
   100% {
       -webkit-transform: scale(1);
-      transform: scale(1)
+      transform: scale(1);
   }
 }
 
@@ -428,18 +428,131 @@ body::before, .body-bg::before {
   0% {
       opacity: 0;
       -webkit-transform: scale(.5);
-      transform: scale(.5)
-  }
-
-  60% {
-      opacity: 1;
-      -webkit-transform: scale(1.2);
-      transform: scale(1.2)
+      transform: scale(.5);
   }
 
   100% {
       -webkit-transform: scale(1);
-      transform: scale(1)
+      transform: scale(1);
   }
 }
-
+.page-top {
+    background-color: rgba(0,0,0,.5);
+    position: fixed;
+    z-index: 904;
+    box-shadow: 2px 0 3px rgba(0,0,0,.5);
+    height: 66px;
+    width: 100%;
+    min-width: 320px;
+    padding: 0 32px 0 40px;
+}
+.page-top span.al-logo {
+    color: #fff;
+    display: block;
+    font-size: 24px;
+    white-space: nowrap;
+    float: left;
+    line-height: 60px;
+    text-decoration: none;
+}
+.page-top span, .page-top span.al-logo {
+    outline: 0!important;
+}
+.page-top span.collapse-menu-link {
+    font-size: 31px;
+    cursor: pointer;
+    display: block;
+    text-decoration: none;
+    line-height: 42px;
+    color: #fff;
+    padding: 0;
+    float: left;
+    margin: 11px 0 0 25px;
+}
+.page-top span.collapse-menu-link {
+    font-size: 31px;
+    cursor: pointer;
+    display: block;
+    text-decoration: none;
+    line-height: 42px;
+    color: #fff;
+    padding: 0;
+    float: left;
+    margin: 11px 0 0 25px;
+}
+.page-top span.al-logo span {
+    color: #209e91;
+}
+.page-top .search {
+    font-size: 13px;
+    line-height: 25px;
+    -webkit-transition: all .5s ease;
+    transition: all .5s ease;
+    width: 600px;
+    float: left;
+    margin: 20px 0 0 30px;
+}
+.page-top .search-icon {
+    color: #fff;
+    font-size: 19px;
+    margin-right: 13px;
+}
+.react-autosuggest__container {
+    display: inline-block;
+}
+.page-top .user-profile {
+    float: right;
+    min-width: 170px;
+    margin-top: 10px;
+}
+.page-top .al-user-profile {
+    float: right;
+    margin-right: 12px;
+    -webkit-transition: all .15s ease-in-out;
+    transition: all .15s ease-in-out;
+    padding: 0;
+    width: 36px;
+    height: 36px;
+    border: 0;
+    opacity: 1;
+    position: relative;
+}
+.page-top .profile-toggle-link {
+    cursor: pointer;
+}
+.page-top .al-user-profile img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+}
+.page-top .al-msg-center {
+    float: right;
+    padding: 0;
+    list-style: none;
+    margin-right: -100px;
+    margin-top: 23px;
+}
+.page-top .al-msg-center > svg {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+    position: relative;
+    cursor: pointer;
+}
+.page-top .al-msg-center span {
+    display: inline-block;
+    min-width: 10px;
+    padding: 2px 4px;
+    color: #fff;
+    vertical-align: baseline;
+    white-space: nowrap;
+    text-align: center;
+    border-radius: 13px;
+    text-shadow: none;
+    line-height: 11px;
+    background-color: #e85656;
+    position: absolute;
+    top: 15px;
+    right: 94px;
+    font-size: 11px;
+}

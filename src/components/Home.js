@@ -23,6 +23,7 @@ import Toolbar from 'material-ui/Toolbar';
 import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import Notifications from '@material-ui/icons/Notifications';
 import Autosuggest from 'react-autosuggest';
 class Home extends React.Component {
 
@@ -80,11 +81,8 @@ class Home extends React.Component {
     // Use your imagination to render suggestions.
     renderSuggestion = suggestion => (
         <div id={suggestion._id} className={"md-search-result__article md-search-result__article--document"}>
-            <h4>
-                {suggestion.original_title}
-            </h4>
             <div>
-                {(suggestion && suggestion.overview.length)?suggestion.overview.substring(0,100):''}...
+                {suggestion.original_title}
             </div>
         </div>
     );
@@ -144,7 +142,7 @@ class Home extends React.Component {
 
         // Autosuggest will pass through all these props to the input.
         const inputProps = {
-            placeholder: 'Search Movie Names/IMDB IDs/Descriptions/Genres',
+            placeholder: 'Search for Movies using Names/IMDB IDs/Descriptions/Genres',
             value,
             onChange: this.onChange
         };
@@ -160,40 +158,45 @@ class Home extends React.Component {
         // }
         return (
             <div className={"movie-container"}>
-            <AppBar position="static">
-                <Toolbar>
-                    <Typography variant="title" color="inherit" className={classes.flex} style={{fontFamily:'Acme, sans-serif'}}>
-                        Discover
-                    </Typography>
-                    <Grid container item xs={12} >
-                            <Grid item xs={4}>
-                            </Grid>
-                            <Grid item xs={8}>
-                                <Autosuggest
-                                    className={"autoselect-input"}
-                                    suggestions={suggestions}
-                                    onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-                                    onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                                    getSuggestionValue={this.getSuggestionValue}
-                                    renderSuggestion={this.renderSuggestion}
-                                    inputProps={inputProps}
-                                />
-                            </Grid>
-                        </Grid>  
-                </Toolbar>
-            </AppBar>
+            <div position="static" className={"page-top"}>
+                <span className="al-logo clearfix"><span>Discover</span></span>
+                <span className="collapse-menu-link"><MenuIcon /></span>
+                <div className="search">
+                    <Search className={"search-icon"} />
+                    <Autosuggest
+                            className={"autoselect-input"}
+                            suggestions={suggestions}
+                            onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                            onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                            getSuggestionValue={this.getSuggestionValue}
+                            renderSuggestion={this.renderSuggestion}
+                            inputProps={inputProps}
+                        />
+                </div>
+                <div className="user-profile">
+                    <div className="al-user-profile">
+                        <span className="profile-toggle-link">
+                            <img src={require("../images/avatar.png")} />
+                        </span>
+                    </div>
+                </div>
+                <div className={"al-msg-center"}>
+                    <Notifications />
+                    <span>6</span>
+                </div>
+            </div>
                 <div className={"movie-info"}>
                     <div className={"movies-index"}>                                               
                         <div className={"movies-container"}>
                             <Grid container className={classes.root} spacing={16}>
                                 <Grid container item xs={12} >
-                                    <Grid item xs={2}>
+                                    <Grid item xs={1}>
                                     </Grid>
-                                    <Grid item xs={8}>
+                                    <Grid item xs={10}>
                                         <div className={"search-stat"}>{!!this.state.search.length ? (`${moviesData.length} results found`) : null} </div>
                                         <Grid container className={classes.demo} justify="center" spacing={Number(16)}>
                                             {moviesData.map(movie => (
-                                                <Grid container key={movie._id} item className={"ele-5"} alignItems={'center'} justify={'center'}>
+                                                <Grid container key={movie._id} item xs={2} alignItems={'center'} justify={'center'}>
                                                     <div>
                                                         <Link to={`/movies/${movie._id}`} ><img id={movie._id} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.original_title} className={"movie-poster"} /> </Link>
                                                     </div>
@@ -212,7 +215,7 @@ class Home extends React.Component {
                                             </Fade>
                                         </Grid>
                                     </Grid>
-                                    <Grid item xs={2}>
+                                    <Grid item xs={1}>
                                     </Grid>
                                 </Grid>
                             </Grid>
