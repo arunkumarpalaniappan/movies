@@ -1,13 +1,11 @@
 import * as types from '../actions/actionTypes'
 import initialState from './initialState'
 
-export default function getMoviesReducer(state = initialState.movieById, action) {
+export default function getMoviesReducer(state = initialState.esSearch, action) {
     switch (action.type) {
-        case types.GET_MOVIE_BY_ID_SUCCESS:
-            return action.movieById;
+        case types.ES_SEARCH_SUCCESS:
+            return  action.esSearchHits;
         default:
             return state;
     }
 }
-
-
