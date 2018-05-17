@@ -7,8 +7,6 @@ import {
     bindActionCreators
 } from 'redux'
 import Typography from 'material-ui/Typography';
-import { CircularProgress } from 'material-ui/Progress';
-import Fade from 'material-ui/transitions/Fade';
 import {Link} from 'react-router-dom';
 import StarRatingComponent from 'react-star-rating-component';
 class Movie extends React.Component {

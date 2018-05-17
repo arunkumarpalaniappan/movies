@@ -33,6 +33,26 @@ export function search(query) {
     }
 }
 
+export function esAutoComplete(query) {
+    return function(dispatch) {
+        return moviesApi.esAutoComplete(query).then(movies => {
+            dispatch(esAutoCompleteSuccess(movies.hits.hits))
+        }).catch(error => {
+            throw(error);
+        });
+    }
+}
+
+export function esSearch(query) {
+    return function(dispatch) {
+        return moviesApi.esSearch(query).then(movies => {
+            dispatch(esSearchSuccess(movies.hits.hits))
+        }).catch(error => {
+            throw(error);
+        });
+    }
+}
+
 export function getMoviesPending() {
     return {type: types.GET_MOVIE_INDEX_PENDING};
 }
@@ -47,4 +67,10 @@ export function getSearchSuccess(moviesSearch) {
 }
 export function getSearchPending() {
     return {type: types.SEARCH_PENDING};
+}
+export function esAutoCompleteSuccess(esAutoCompleteHits) {
+    return {type: types.ES_AUTOCOMPLETE_SUCCESS, esAutoCompleteHits};
+}
+export function esSearchSuccess(esSearchHits) {
+    return {type: types.ES_SEARCH_SUCCESS, esSearchHits};
 }

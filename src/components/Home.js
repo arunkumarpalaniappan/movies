@@ -10,18 +10,11 @@ import {
     withStyles as classes
 } from 'material-ui/styles';
 import Grid from 'material-ui/Grid';
-import Typography from 'material-ui/Typography';
 import _ from 'lodash';
 import { CircularProgress } from 'material-ui/Progress';
 import Fade from 'material-ui/transitions/Fade';
 import { Link } from 'react-router-dom';
-import Input, { InputLabel, InputAdornment } from 'material-ui/Input';
-import { FormControl } from 'material-ui/Form';
 import Search from '@material-ui/icons/Search';
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
-import Button from 'material-ui/Button';
-import IconButton from 'material-ui/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Notifications from '@material-ui/icons/Notifications';
 import Autosuggest from 'react-autosuggest';
@@ -37,7 +30,12 @@ class Home extends React.Component {
             requestSent: false,
             search: '',
             searchData : [],
-            isSearched: false
+            isSearched: false,
+            alreadyRequested: false,
+            esAutoComplete: [],
+            isAutocomplete: true,
+            esSearch: [],
+            searchedData: false
         };
         this.handleOnScroll = this.handleOnScroll.bind(this);
         this.getSuggestions = this.getSuggestions.bind(this);
@@ -50,6 +48,14 @@ class Home extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         const merge = (a, b, p) => a.filter(aa => !b.find(bb => aa[p] === bb[p])).concat(b);
+        if(this.props.esAutoComplete !== nextProps.esAutoComplete) {
+            this.setState({esAutoComplete: nextProps.esAutoComplete, alreadyRequested: false})
+        }
+        if(this.props.esSearch !== nextProps.esSearch) {
+            this.setState({esSearch: nextProps.esSearch, searchedData: true})
+        } else {
+            this.setState({searchedData: false})
+        }
         if(this.state.isSearched) {
             this.setState({searchData: nextProps.moviesData ,suggestions : this.getSuggestions()});
         } else if (!!!nextProps.moviesData.fetching) {
@@ -68,21 +74,22 @@ class Home extends React.Component {
     }
     // Teach Autosuggest how to calculate suggestions for any given input value.
     getSuggestions = () => {
-        return this.state.searchData
+        return this.state.esAutoComplete
     };
     // When suggestion is clicked, Autosuggest needs to populate the input
     // based on the clicked suggestion. Teach Autosuggest how to calculate the
     // input value for every given suggestion.
     getSuggestionValue = suggestion => {
-        this.props.history.push(`/movies/${suggestion._id}`);
-        return suggestion.original_title;
+        this.setState({isAutocomplete: false});
+        this.props.actions.esSearch(suggestion._source.original_title);
+        return suggestion._source.original_title
     }
 
     // Use your imagination to render suggestions.
     renderSuggestion = suggestion => (
-        <div id={suggestion._id} className={"md-search-result__article md-search-result__article--document"}>
+        <div id={suggestion._id} data={suggestion._source.original_title} className={"md-search-result__article md-search-result__article--document"}>
             <div>
-                {suggestion.original_title}
+                {suggestion._source.original_title}
             </div>
         </div>
     );
@@ -95,9 +102,14 @@ class Home extends React.Component {
     // You already implemented this logic above, so just use it.
     onSuggestionsFetchRequested = ({ value }) => {
         if(value.length > 3) {
-            this.setState({value: value, isSearched: true})
-            //const searchFun = _.debounce(this.searchwithDebounce, 1000);
-            this.props.actions.search(value)
+            this.setState({value: value, isSearched: true, isAutocomplete: true})
+            if(!this.state.alreadyRequested && this.state.isAutocomplete) {
+                this.setState({alreadyRequested:true});
+                setTimeout(
+                    () => { 
+                        this.props.actions.esAutoComplete(this.state.value) 
+                    }, 1000);
+            }
         } else {
             this.setState({isSearched : false})
         }
@@ -131,8 +143,15 @@ class Home extends React.Component {
     searchMovies(e) {
         if(e.target.value.length > 3) {
             this.setState({value: e.target.value, isSearched: true})
-            const searchFun = _.debounce(this.searchwithDebounce, 1000);
-            this.props.actions.search(e.target.value)
+            if(!this.state.alreadyRequested) {
+                this.setState({alreadyRequested:true});
+                setTimeout(
+                    () => { 
+                        this.props.actions.esAutoComplete(this.state.value) 
+                    }, 1000);
+            }
+            // const searchFun = _.debounce(this.searchwithDebounce, 1000);
+            // this.props.actions.search(e.target.value)
         } else {
             this.setState({isSearched : false})
         }
@@ -156,6 +175,7 @@ class Home extends React.Component {
         // if(this.state.isSearched) {
         //     moviesData = this.state.searchData
         // }
+        console.log(this.state.esSearch)
         return (
             <div className={"movie-container"}>
             <div position="static" className={"page-top"}>
@@ -176,7 +196,7 @@ class Home extends React.Component {
                 <div className="user-profile">
                     <div className="al-user-profile">
                         <span className="profile-toggle-link">
-                            <img src={require("../images/avatar.png")} />
+                            <img src={require("../images/avatar.png")} alt="user-icon" />
                         </span>
                     </div>
                 </div>
@@ -229,7 +249,9 @@ class Home extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        moviesData: state.moviesData
+        moviesData: state.moviesData,
+        esAutoComplete: state.esAutoComplete,
+        esSearch: state.esSearch
     };
 }
 

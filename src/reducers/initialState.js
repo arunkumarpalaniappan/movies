@@ -1,4 +1,6 @@
 export default {
     moviesIndex: [],
-    mmovieById: {}
+    movieById: {},
+    esAutoComplete: [],
+    esSearch: []
 }
