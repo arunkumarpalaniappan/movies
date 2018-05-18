@@ -67,9 +67,6 @@ class Home extends React.Component {
 
     componentDidMount() {
         window.addEventListener('scroll', this.handleOnScroll);
-        // [1,2,3,4,5].map(page => {
-        //     this.props.actions.list(page);
-        // })
         this.props.actions.list(1);
     }
     // Teach Autosuggest how to calculate suggestions for any given input value.
@@ -80,7 +77,7 @@ class Home extends React.Component {
     // based on the clicked suggestion. Teach Autosuggest how to calculate the
     // input value for every given suggestion.
     getSuggestionValue = suggestion => {
-        this.setState({isAutocomplete: false});
+        this.setState({isAutocomplete: false,esAutoComplete: []});
         this.props.actions.esSearch(suggestion._source.original_title);
         return suggestion._source.original_title
     }
@@ -165,7 +162,7 @@ class Home extends React.Component {
             value,
             onChange: this.onChange
         };
-        let moviesData = [];
+        let moviesData = [],filteredData = false;
         if(this.state.moviesData.length) {
             moviesData = this.state.moviesData;
             //moviesData = this.state.moviesData.filter((movie) => movie.original_title.toString().toLowerCase().trim().includes(this.state.search.toLowerCase().trim()));
@@ -175,7 +172,14 @@ class Home extends React.Component {
         // if(this.state.isSearched) {
         //     moviesData = this.state.searchData
         // }
-        console.log(this.state.esSearch)
+        if(this.state.searchData && this.state.esSearch.length) {
+            moviesData = this.state.esSearch.map(d => {
+                d._source._id = d._id;
+                d._source.poster_path = JSON.parse(d._source.belongs_to_collection.replace(/'s/g, 's').replace(/'/g,'"').replace(/: None/g,': "/7G9915LfUQ2lVfwMEEhDsn3kT4B.jpg"')).poster_path;
+                return d._source;
+             });
+             filteredData = true;
+        }
         return (
             <div className={"movie-container"}>
             <div position="static" className={"page-top"}>
@@ -224,7 +228,8 @@ class Home extends React.Component {
                                                     <div className={"movie-lan"}>{movie.release_date.split("-")[0]}</div>
                                                 </Grid>
                                             ))}
-                                            <Fade
+                                            {!filteredData? 
+                                                <Fade
                                                 in={!this.state.search.length}
                                                 style={{
                                                     transitionDelay: !this.state.search.length ? '800ms' : '0ms',
@@ -233,6 +238,8 @@ class Home extends React.Component {
                                             >
                                                 <CircularProgress />
                                             </Fade>
+                                            : null }
+                                            
                                         </Grid>
                                     </Grid>
                                     <Grid item xs={1}>
