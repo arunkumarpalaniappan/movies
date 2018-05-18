@@ -1,7 +1,7 @@
 const serverConfig = {
-    "ssl": false,
-    "host": "connect.arunkumarpalaniappan.me",
-    "port": 3456
+    "ssl": true,
+    "host": "akrp-server.herokuapp.com",
+    "port": 443
     },
     elasticSearch = {
         "ssl": false,
