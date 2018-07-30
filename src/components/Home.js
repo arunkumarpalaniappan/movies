@@ -144,11 +144,11 @@ class Home extends React.Component {
                 this.setState({alreadyRequested:true});
                 setTimeout(
                     () => { 
-                        this.props.actions.esAutoComplete(this.state.value) 
+                        this.props.actions.search(e.state.value)
                     }, 1000);
             }
             // const searchFun = _.debounce(this.searchwithDebounce, 1000);
-            // this.props.actions.search(e.target.value)
+            // this.props.actions.esAutoComplete(this.state.value) 
         } else {
             this.setState({isSearched : false})
         }
